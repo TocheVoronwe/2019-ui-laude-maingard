@@ -1,17 +1,22 @@
-type email = string;
-type password = string;
+let login = (email, password) => {};
+
+type action =
+  | Login;
 
 type state = {
-  email,
-  password,
+  email: string,
+  password: string,
 };
 
 let component = ReasonReact.reducerComponent("Register");
 
 let make = _children => {
   ...component,
-  reducer: state => {
-    ReasonReact.Update({email: state.email});
+  initialState: () => {email: "", password: ""},
+  reducer: (action, state) => {
+    switch (action) {
+    | Login => ReasonReact.Update({email: state.email, password: state.password})
+    };
   },
   render: self => {
     <div>
