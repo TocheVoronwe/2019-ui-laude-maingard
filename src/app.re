@@ -31,10 +31,12 @@ module App = {
       let watchId = ReasonReact.Router.watchUrl(url => self.send(ChangeRoute(url |> mapUrlToRoute)));
       self.onUnmount(() => ReasonReact.Router.unwatchUrl(watchId));
     },
-    reducer: (action, state) =>
+    reducer: (action, state) => {
+      print_string("REDUCER");
       switch (action) {
       | ChangeRoute(route) => ReasonReact.Update({route: route})
-      },
+      };
+    },
     render: self =>
       switch (self.state.route) {
       | Register => <Register />
