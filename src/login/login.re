@@ -21,10 +21,10 @@ let make = _children => {
     | UpdatePassword(password) => ReasonReact.Update({...state, password})
     | Submit =>
       ReasonReact.SideEffects(
-        _self =>
+        _self => {
           Js.Promise.(
             Fetch.fetchWithInit(
-              "une url",
+              "https://qsi-tochevoronwe.cleverapps.io/api/v1/users/login",
               Fetch.RequestInit.make(
                 ~method_=Post,
                 ~body=
@@ -37,7 +37,7 @@ let make = _children => {
                   ),
                 ~headers=
                   Fetch.HeadersInit.make({
-                    //                    "mode": "cors",
+                    "mode": "cors",
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
                   }),
@@ -48,10 +48,9 @@ let make = _children => {
                  Js.log(value);
                  Js.Promise.resolve(value);
                })
-          ),
-        /* |> catch_(err => {
-           /* Js.log(err); */
-           Js.Promise.resolve(); });  */
+          );
+          ();
+        },
       )
     };
   },
