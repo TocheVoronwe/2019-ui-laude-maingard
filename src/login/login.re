@@ -1,9 +1,7 @@
 let login = (email, password) => {};
 
 type action =
-  | UpdateEmail(string)
-  | UpdatePassword(string)
-  | Submit;
+  | Login;
 
 type state = {
   email: string,
@@ -17,56 +15,14 @@ let make = _children => {
   initialState: () => {email: "", password: ""},
   reducer: (action, state) => {
     switch (action) {
-    | UpdateEmail(email) => ReasonReact.Update({...state, email})
-    | UpdatePassword(password) => ReasonReact.Update({...state, password})
-    | Submit =>
-      ReasonReact.SideEffects(
-        _self =>
-          Js.Promise.(
-            Fetch.fetchWithInit(
-              "une url",
-              Fetch.RequestInit.make(
-                ~method_=Post,
-                ~body=
-                  Fetch.BodyInit.make(
-                    Js.Json.stringify(
-                      Json.Encode.(
-                        object_([("email", string(state.email)), ("password", string(state.password))])
-                      ),
-                    ),
-                  ),
-                ~headers=
-                  Fetch.HeadersInit.make({
-                    //                    "mode": "cors",
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                  }),
-                (),
-              ),
-            )
-            |> then_(value => {
-                 Js.log(value);
-                 Js.Promise.resolve(value);
-               })
-          ),
-        /* |> catch_(err => {
-           /* Js.log(err); */
-           Js.Promise.resolve(); });  */
-      )
+    | Login => ReasonReact.Update({email: state.email, password: state.password})
     };
   },
   render: self => {
     <div>
-      <h1> {ReasonReact.string("Login")} </h1>
-      <div>
-        {ReasonReact.string("email : ")}
-        <input name="email" onChange={_evt => self.send(UpdateEmail(ReactEvent.Form.target(_evt)##value))} />
-      </div>
-      <div>
-        {ReasonReact.string("password : ")}
-        <input name="password" onChange={_evt => self.send(UpdatePassword(ReactEvent.Form.target(_evt)##value))} />
-      </div>
-      <button onClick={_ => self.send(Submit)}> {ReasonReact.string("Register")} </button>
+      <h1> {ReasonReact.string("Péniche")} </h1>
+      <div> {ReasonReact.string("péniche : ")} <input name="email" /> </div>
+      <div> {ReasonReact.string("péniche : ")} <input name="password" /> </div>
     </div>;
   },
 };

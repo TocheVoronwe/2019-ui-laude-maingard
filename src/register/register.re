@@ -1,7 +1,7 @@
-let login = (email, password) => {};
+let register = (email, password) => {};
 
 type action =
-  | Login;
+  | Register;
 
 type state = {
   email: string,
@@ -15,7 +15,7 @@ let make = _children => {
   initialState: () => {email: "", password: ""},
   reducer: (action, state) => {
     switch (action) {
-    | Login => ReasonReact.Update({email: state.email, password: state.password})
+    | Register => ReasonReact.Update({email: state.email, password: state.password})
     };
   },
   render: self => {
