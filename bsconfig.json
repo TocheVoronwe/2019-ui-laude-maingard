@@ -9,7 +9,7 @@
     {
       "dir": "__tests__",
       "type": "dev"
-    }
+    },
   ],
   "package-specs": {
     "module": "commonjs",
