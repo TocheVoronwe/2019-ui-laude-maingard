@@ -1,3 +1,5 @@
+open HttpRequestModule;
+
 let login = (email, password) => {};
 
 type action =
@@ -29,36 +31,13 @@ let make = _children => {
       ReasonReact.NoUpdate;
     | Submit =>
       ReasonReact.SideEffects(
-        _self => {
-          Js.Promise.(
-            Fetch.fetchWithInit(
-              "https://qsi-tochevoronwe.cleverapps.io/api/v1/users/login",
-              Fetch.RequestInit.make(
-                ~method_=Post,
-                ~body=
-                  Fetch.BodyInit.make(
-                    Js.Json.stringify(
-                      Json.Encode.(
-                        object_([("email", string(state.email)), ("password", string(state.password))])
-                      ),
-                    ),
-                  ),
-                ~headers=
-                  Fetch.HeadersInit.make({
-                    "mode": "cors",
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                  }),
-                (),
-              ),
-            )
-            |> then_(value => {
-                 Js.log(value);
-                 Js.Promise.resolve(value);
-               })
-          );
-          ();
-        },
+        _self =>
+          doPost(
+            "https://qsi-tochevoronwe.cleverapps.io/api/v1/users/login",
+            Json.Encode.(object_([("email", string(state.email)), ("password", string(state.password))])),
+            () =>
+            ReasonReact.Router.push("score")
+          ),
       )
     };
   },
@@ -73,8 +52,9 @@ let make = _children => {
         {ReasonReact.string("password : ")}
         <input name="password" onChange={_evt => self.send(UpdatePassword(ReactEvent.Form.target(_evt)##value))} />
       </div>
-      <button onClick={_ => self.send(GoToRegister)}> {ReasonReact.string("Register")} </button>
       <button onClick={_ => self.send(Submit)}> {ReasonReact.string("Login")} </button>
+      <br />
+      <button onClick={_ => self.send(GoToRegister)}> {ReasonReact.string("Create an account !")} </button>
     </div>;
   },
 };

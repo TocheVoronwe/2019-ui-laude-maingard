@@ -1,3 +1,5 @@
+open HttpRequestModule;
+
 let register = (email, password, firstName, lastName) => {};
 
 type action =
@@ -30,12 +32,22 @@ let make = _children => {
       ReasonReact.Router.push("login");
       ReasonReact.NoUpdate;
     | Register =>
-      ReasonReact.Update({
-        email: state.email,
-        password: state.password,
-        lastName: state.lastName,
-        firstName: state.firstName,
-      })
+      ReasonReact.SideEffects(
+        _self =>
+          doPost(
+            "https://qsi-tochevoronwe.cleverapps.io/api/v1/users",
+            Json.Encode.(
+              object_([
+                ("email", string(state.email)),
+                ("password", string(state.password)),
+                ("firstName", string(state.firstName)),
+                ("lastName", string(state.lastName)),
+              ])
+            ),
+            () =>
+            ReasonReact.Router.push("score")
+          ),
+      )
     };
   },
   render: self => {
@@ -60,8 +72,10 @@ let make = _children => {
         {ReasonReact.string("Last name : ")}
         <input name="lastName" onChange={_evt => self.send(UpdateLastName(ReactEvent.Form.target(_evt)##value))} />
       </div>
-      <button onClick={_ => self.send(GoToLogin)}> {ReasonReact.string("Login")} </button>
       <button onClick={_ => self.send(Register)}> {ReasonReact.string("Register")} </button>
+      <br />
+      {ReasonReact.string("Already have an account ?")}
+      <button onClick={_ => self.send(GoToLogin)}> {ReasonReact.string("Login")} </button>
     </div>;
   },
 };
