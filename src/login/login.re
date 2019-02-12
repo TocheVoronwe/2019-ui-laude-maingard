@@ -65,7 +65,7 @@ let make = _children => {
         {ReasonReact.string("password : ")}
         <input name="password" onChange={_evt => self.send(UpdatePassword(ReactEvent.Form.target(_evt)##value))} />
       </div>
-      <button onClick={_ => self.send(Submit)}> {ReasonReact.string("Register")} </button>
+      <button onClick={_ => self.send(Submit)}> {ReasonReact.string("Login")} </button>
     </div>;
   },
 };
