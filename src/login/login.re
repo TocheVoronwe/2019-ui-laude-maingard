@@ -4,6 +4,7 @@ type action =
   | UpdateEmail(string)
   | UpdatePassword(string)
   | GoToRegister
+  | GoToScore
   | Submit;
 
 type state = {
@@ -22,6 +23,9 @@ let make = _children => {
     | UpdatePassword(password) => ReasonReact.Update({...state, password})
     | GoToRegister =>
       ReasonReact.Router.push("register");
+      ReasonReact.NoUpdate;
+    | GoToScore =>
+      ReasonReact.Router.push("score");
       ReasonReact.NoUpdate;
     | Submit =>
       ReasonReact.SideEffects(
