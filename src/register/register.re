@@ -5,6 +5,7 @@ type action =
   | UpdatePassword(string)
   | UpdateFirstName(string)
   | UpdateLastName(string)
+  | GoToLogin
   | Register;
 
 type state = {
@@ -25,6 +26,9 @@ let make = _children => {
     | UpdatePassword(password) => ReasonReact.Update({...state, password})
     | UpdateFirstName(firstName) => ReasonReact.Update({...state, firstName})
     | UpdateLastName(lastName) => ReasonReact.Update({...state, lastName})
+    | GoToLogin =>
+      ReasonReact.Router.push("login");
+      ReasonReact.NoUpdate;
     | Register =>
       ReasonReact.Update({
         email: state.email,
@@ -56,6 +60,7 @@ let make = _children => {
         {ReasonReact.string("Last name : ")}
         <input name="lastName" onChange={_evt => self.send(UpdateLastName(ReactEvent.Form.target(_evt)##value))} />
       </div>
+      <button onClick={_ => self.send(GoToLogin)}> {ReasonReact.string("Login")} </button>
       <button onClick={_ => self.send(Register)}> {ReasonReact.string("Register")} </button>
     </div>;
   },
