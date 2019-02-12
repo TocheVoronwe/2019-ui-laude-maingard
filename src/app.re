@@ -1,6 +1,7 @@
 type route =
   | Login
-  | Register;
+  | Register
+  | Score;
 
 module App = {
   type state = {route};
@@ -13,20 +14,19 @@ module App = {
     | ChangeRoute(route) => ReasonReact.Update({route: route})
     };
 
-  let mapUrlToRoute = (url: ReasonReact.Router.url) => {
-    print_string("test");
+  let mapUrlToRoute = (url: ReasonReact.Router.url) =>
     switch (url.path) {
     | ["login"] => Login
     | ["register"] => Register
-    | _ => Register
+    | ["score"] => Score
+    | _ => Login
     };
-  };
 
   let component = ReasonReact.reducerComponent("App");
 
   let make = _children => {
     ...component,
-    initialState: () => {route: Login},
+    initialState: () => {route: ReasonReact.Router.dangerouslyGetInitialUrl() |> mapUrlToRoute},
     didMount: self => {
       let watchId = ReasonReact.Router.watchUrl(url => self.send(ChangeRoute(url |> mapUrlToRoute)));
       self.onUnmount(() => ReasonReact.Router.unwatchUrl(watchId));
@@ -41,7 +41,7 @@ module App = {
       switch (self.state.route) {
       | Register => <Register />
       | Login => <Login />
-      | _ => <Register />
+      | Score => <Score />
       },
   };
 };
