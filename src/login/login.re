@@ -1,3 +1,5 @@
+let backUrl: string = "https://qsi-tochevoronwe.cleverapps.io/api/v1/users/login";
+
 let login = (email, password) => {};
 
 type action =
@@ -30,9 +32,10 @@ let make = _children => {
     | Submit =>
       ReasonReact.SideEffects(
         _self => {
+          print_string(backUrl);
           Js.Promise.(
             Fetch.fetchWithInit(
-              "https://qsi-tochevoronwe.cleverapps.io/api/v1/users/login",
+              backUrl,
               Fetch.RequestInit.make(
                 ~method_=Post,
                 ~body=
